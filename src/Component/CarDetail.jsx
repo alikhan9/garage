@@ -2,7 +2,6 @@ import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useEffect } from 'react';
-import { BsArrowLeft, BsArrowRight } from 'react-icons/bs';
 import 'pure-react-carousel/dist/react-carousel.es.css';
 import distanceImg from '../Images/route.png'
 import motorImg from '../Images/moteur.png'
@@ -13,13 +12,10 @@ import { AiFillCaretRight } from 'react-icons/ai'
 import DoubleDivFlex from './DoubleDivFlex';
 import { db, storage } from '../firebase';
 import { doc, increment, updateDoc } from 'firebase/firestore';
-import { getDownloadURL, listAll, ref } from 'firebase/storage';
-import Image from 'react-image-webp';
-import Slider from "react-slick";
+import { getDownloadURL, ref } from 'firebase/storage';
 import Carousel from 'react-gallery-carousel';
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { isWebpSupported } from 'react-image-webp/dist/utils';
 import 'react-gallery-carousel/dist/index.css';
 
 const CarDetail = () => {
@@ -30,7 +26,6 @@ const CarDetail = () => {
 
     const [images, setImages] = useState([]);
 
-    const [fullScreen, setFullScreen] = useState(false);
 
     useEffect(() => {
         const val = JSON.parse(localStorage.getItem("car"));

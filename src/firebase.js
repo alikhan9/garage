@@ -3,6 +3,7 @@ import { getFirestore } from "firebase/firestore";
 import { initializeApp } from 'firebase/app';
 import { getStorage } from '@firebase/storage';
 
+
 const appConfig = {
     apiKey: process.env.REACT_APP_FIREBASE_API_KEY,
     authDomain: process.env.REACT_APP_FIREBASE_AUTH_DOMAIN,

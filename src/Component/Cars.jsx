@@ -1,4 +1,4 @@
-import { collection, getDocs } from "@firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { getDownloadURL, ref } from "firebase/storage";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
@@ -93,20 +93,22 @@ function Cars({ itemsPerPage, setCar }) {
 
   useEffect(() => {
     setCars([]);
-    getDocs(dbCarRef).then(response => {
+    const q = query(dbCarRef, where("Status", "!=", "Vendu"));
+
+    getDocs(q).then((response) => {
       if (parseInt(response.docs.length / itemsPerPage) < 1)
         setPageCount(1);
       else
         setPageCount(parseInt(response.docs.length / itemsPerPage));
 
-      response.forEach(doc => {
+      response.forEach((doc) => {
         let newCar = { ...doc.data(), id: doc.id };
-        setCars(old => {
-          let toAdd = { id: doc.id, Status: newCar.Status, vue: newCar.vue, mini: newCar.mini, carrosserie: newCar.carrosserie, fiche_technique: newCar.fiche_technique, motorisation: newCar.motorisation, equipement: newCar.equipement, images: newCar.images }
+        setCars((old) => {
+          let toAdd = { id: doc.id, Status: newCar.Status, vue: newCar.vue, mini: newCar.mini, carrosserie: newCar.carrosserie, fiche_technique: newCar.fiche_technique, motorisation: newCar.motorisation, equipement: newCar.equipement, images: newCar.images };
           return [...old, toAdd];
         });
-      })
-    })
+      });
+    }).catch((error) => console.error("Error getting documents: ", error));
   }, [])
 
 
@@ -120,7 +122,6 @@ function Cars({ itemsPerPage, setCar }) {
   // Invoke when user click to request another page.
   const handlePageClick = (event) => {
     const newOffset = event.selected * itemsPerPage % items.length;
-    // console.log(`User requested page number ${event.selected}, which is offset ${newOffset}`);
     setItemOffset(newOffset);
   };
 
